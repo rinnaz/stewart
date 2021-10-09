@@ -1,8 +1,10 @@
 <?xml version="1.0"?>
 <sdf version="1.5">
 <%
-	BASE_HEIGHT = 0.25
-	BASE_RADIUS = 1.0
+	
+    PI = 3.14159265359
+    BASE_HEIGHT = 0.25
+	BASE_RADIUS = 2.0
 	BASE_MASS = 1000.0
 
 	PLATFORM_HEIGHT = 0.1
@@ -15,14 +17,19 @@
 	
 	PISTON_RADIUS = BALL_RADIUS
 
-	BALL_DTC = Math.sqrt(BASE_RADIUS**2-4*BASE_RADIUS*BALL_RADIUS+5*BALL_RADIUS**2)
-	BALL_SEPARATION = Math.sqrt(2*BALL_DTC**2-2*BALL_DTC**2*Math.cos(1.047-2*Math.asin(BALL_RADIUS/(BASE_RADIUS-2*BALL_RADIUS))))
-	DISTANCE_TO_MIDPOINT = Math.sqrt(BALL_DTC**2-(0.5*BALL_SEPARATION)**2)
+    BALL_DTC = Math.sqrt(BASE_RADIUS**2 - 4*BASE_RADIUS*BALL_RADIUS + 5*BALL_RADIUS**2)
+	
+    BALL_SEPARATION = Math.sqrt(2*BALL_DTC**2 - 2*BALL_DTC**2 * Math.cos(PI/3-2*Math.asin(BALL_RADIUS/(BASE_RADIUS - 2*BALL_RADIUS))))
+	DISTANCE_TO_MIDPOINT = Math.sqrt(BALL_DTC**2 - (0.5*BALL_SEPARATION)**2)
 
-	PISTON_PITCH_ANGLE = 1.571-Math.atan((BASE_PLATFORM_DISTANCE-0.5*BASE_HEIGHT-0.5*PLATFORM_HEIGHT)/BALL_SEPARATION)
-	PISTON_YAW_ANGLE = 1.571-(0.5*(3.142-(1.047-2*Math.asin(BALL_RADIUS/(BASE_RADIUS-2*BALL_RADIUS))))-Math.asin(BALL_RADIUS/(BASE_RADIUS-2*BALL_RADIUS)))
+	PISTON_PITCH_ANGLE = PI/2-Math.atan((BASE_PLATFORM_DISTANCE-0.5*BASE_HEIGHT-0.5*PLATFORM_HEIGHT)/BALL_SEPARATION)
+	PISTON_YAW_ANGLE = PI/2-(0.5*(PI-(PI/3-2*Math.asin(BALL_RADIUS/(BASE_RADIUS-2*BALL_RADIUS))))-Math.asin(BALL_RADIUS/(BASE_RADIUS-2*BALL_RADIUS)))
 
 	PISTON_LENGTH = Math.sqrt((BASE_PLATFORM_DISTANCE-0.5*BASE_HEIGHT-0.5*PLATFORM_HEIGHT)**2+BALL_SEPARATION**2)
+
+    PISTON_PROJECTION = PISTON_LENGTH * Math.cos(PISTON_PITCH_ANGLE) * Math.cos(PISTON_YAW_ANGLE)
+
+    BALL_JOINT_LIMIT = PI/3
 %>								
 <model name = "stewart">
 	<plugin name="joint_controller" filename="libjoint_controller.so"/>
@@ -118,8 +125,8 @@
 		<axis> 
 			<xyz> 0 1 0 </xyz>
 			<limit>
-				<lower> -0.786 </lower>
-				<upper> 0.786 </upper>
+				<lower> <%= -BALL_JOINT_LIMIT %> </lower>
+				<upper> <%= BALL_JOINT_LIMIT %> </upper>
 				<velocity> 0.1 </velocity>
 			</limit>
 		</axis>
@@ -132,8 +139,8 @@
 		<axis> 
 			<xyz> 0 1 0 </xyz>
 			<limit>
-				<lower> -0.786 </lower>
-				<upper> 0.786 </upper>
+				<lower> <%= -BALL_JOINT_LIMIT %> </lower>
+				<upper> <%= BALL_JOINT_LIMIT %> </upper>
 				<velocity> 0.1 </velocity>
 			</limit>
 		</axis>
@@ -146,8 +153,8 @@
 		<axis> 
 			<xyz> 0 1 0 </xyz>
 			<limit>
-				<lower> -0.786 </lower>
-				<upper> 0.786 </upper>
+				<lower> <%= -BALL_JOINT_LIMIT %> </lower>
+				<upper> <%= BALL_JOINT_LIMIT %> </upper>
 				<velocity> 0.1 </velocity>
 			</limit>
 		</axis>
@@ -160,8 +167,8 @@
 		<axis> 
 			<xyz> 0 1 0 </xyz>
 			<limit>
-				<lower> -0.786 </lower>
-				<upper> 0.786 </upper>
+				<lower> <%= -BALL_JOINT_LIMIT %> </lower>
+				<upper> <%= BALL_JOINT_LIMIT %> </upper>
 				<velocity> 0.1 </velocity>
 			</limit>
 		</axis>
@@ -174,8 +181,8 @@
 		<axis> 
 			<xyz> 0 1 0 </xyz>
 			<limit>
-				<lower> -0.786 </lower>
-				<upper> 0.786 </upper>
+				<lower> <%= -BALL_JOINT_LIMIT %> </lower>
+				<upper> <%= BALL_JOINT_LIMIT %> </upper>
 				<velocity> 0.1 </velocity>
 			</limit>
 		</axis>
@@ -188,140 +195,140 @@
 		<axis> 
 			<xyz> 0 1 0 </xyz>
 			<limit>
-				<lower> -0.786 </lower>
-				<upper> 0.786 </upper>
+				<lower> <%= -BALL_JOINT_LIMIT %> </lower>
+				<upper> <%= BALL_JOINT_LIMIT %> </upper>
 				<velocity> 0.1 </velocity>
 			</limit>
 		</axis>
 	</joint>
 
-	<joint name = "top_ball1_joint" type = "revolute2" >
+	<joint name = "top_ball1_joint" type = "ball" >
 		<parent> platform_link </parent>
 		<child> top_ball1_link </child>
 		<pose> 0 0 0 0 0 0 </pose>
 		<axis> 
 			<xyz> 0 1 0 </xyz>
 			<limit>
-				<lower> -0.786 </lower>
-				<upper> 0.786 </upper>
+				<lower> <%= -BALL_JOINT_LIMIT %> </lower>
+				<upper> <%= BALL_JOINT_LIMIT %> </upper>
 				<velocity> 0.1 </velocity>
 			</limit>
 		</axis>
 		<axis2> 
 			<xyz> 0 0 1 </xyz>
 			<limit>
-				<lower> -0.786 </lower>
-				<upper> 0.786 </upper>
+				<lower> <%= -BALL_JOINT_LIMIT %> </lower>
+				<upper> <%= BALL_JOINT_LIMIT %> </upper>
 				<velocity> 0.1 </velocity>
 			</limit>
 		</axis2>
 	</joint>
 
-	<joint name = "top_ball2_joint" type = "revolute2" >
+	<joint name = "top_ball2_joint" type = "ball" >
 		<parent> platform_link </parent>
 		<child> top_ball2_link </child>
 		<pose> 0 0 0 0 0 0 </pose>
 		<axis> 
 			<xyz> 0 1 0 </xyz>
 			<limit>
-				<lower> -0.786 </lower>
-				<upper> 0.786 </upper>
+				<lower> <%= -BALL_JOINT_LIMIT %> </lower>
+				<upper> <%= BALL_JOINT_LIMIT %> </upper>
 				<velocity> 0.1 </velocity>
 			</limit>
 		</axis>
 		<axis2> 
 			<xyz> 0 0 1 </xyz>
 			<limit>
-				<lower> -0.786 </lower>
-				<upper> 0.786 </upper>
+				<lower> <%= -BALL_JOINT_LIMIT %> </lower>
+				<upper> <%= BALL_JOINT_LIMIT %> </upper>
 				<velocity> 0.1 </velocity>
 			</limit>
 		</axis2>
 	</joint>
 
-	<joint name = "top_ball3_joint" type = "revolute2" >
+	<joint name = "top_ball3_joint" type = "ball" >
 		<parent> platform_link </parent>
 		<child> top_ball3_link </child>
 		<pose> 0 0 0 0 0 0 </pose>
 		<axis> 
 			<xyz> 0 1 0 </xyz>
 			<limit>
-				<lower> -0.786 </lower>
-				<upper> 0.786 </upper>
+				<lower> <%= -BALL_JOINT_LIMIT %> </lower>
+				<upper> <%= BALL_JOINT_LIMIT %> </upper>
 				<velocity> 0.1 </velocity>
 			</limit>
 		</axis>
 		<axis2> 
 			<xyz> 0 0 1 </xyz>
 			<limit>
-				<lower> -0.786 </lower>
-				<upper> 0.786 </upper>
+				<lower> <%= -BALL_JOINT_LIMIT %> </lower>
+				<upper> <%= BALL_JOINT_LIMIT %> </upper>
 				<velocity> 0.1 </velocity>
 			</limit>
 		</axis2>
 	</joint>
 
-	<joint name = "top_ball4_joint" type = "revolute2" >
+	<joint name = "top_ball4_joint" type = "ball" >
 		<parent> platform_link </parent>
 		<child> top_ball4_link </child>
 		<pose> 0 0 0 0 0 0 </pose>
 		<axis> 
 			<xyz> 0 1 0 </xyz>
 			<limit>
-				<lower> -0.786 </lower>
-				<upper> 0.786 </upper>
+				<lower> <%= -BALL_JOINT_LIMIT %> </lower>
+				<upper> <%= BALL_JOINT_LIMIT %> </upper>
 				<velocity> 0.1 </velocity>
 			</limit>
 		</axis>
 		<axis2> 
 			<xyz> 0 0 1 </xyz>
 			<limit>
-				<lower> -0.786 </lower>
-				<upper> 0.786 </upper>
+				<lower> <%= -BALL_JOINT_LIMIT %> </lower>
+				<upper> <%= BALL_JOINT_LIMIT %> </upper>
 				<velocity> 0.1 </velocity>
 			</limit>
 		</axis2>
 	</joint>
 
-	<joint name = "top_ball5_joint" type = "revolute2" >
+	<joint name = "top_ball5_joint" type = "ball" >
 		<parent> platform_link </parent>
 		<child> top_ball5_link </child>
 		<pose> 0 0 0 0 0 0 </pose>
 		<axis> 
 			<xyz> 0 1 0 </xyz>
 			<limit>
-				<lower> -0.786 </lower>
-				<upper> 0.786 </upper>
+				<lower> <%= -BALL_JOINT_LIMIT %> </lower>
+				<upper> <%= BALL_JOINT_LIMIT %> </upper>
 				<velocity> 0.1 </velocity>
 			</limit>
 		</axis>
 		<axis2> 
 			<xyz> 0 0 1 </xyz>
 			<limit>
-				<lower> -0.786 </lower>
-				<upper> 0.786 </upper>
+				<lower> <%= -BALL_JOINT_LIMIT %> </lower>
+				<upper> <%= BALL_JOINT_LIMIT %> </upper>
 				<velocity> 0.1 </velocity>
 			</limit>
 		</axis2>
 	</joint>
 
-	<joint name = "top_ball6_joint" type = "revolute2" >
+	<joint name = "top_ball6_joint" type = "ball" >
 		<parent> platform_link </parent>
 		<child> top_ball6_link </child>
 		<pose> 0 0 0 0 0 0 </pose>
 		<axis> 
 			<xyz> 0 1 0 </xyz>
 			<limit>
-				<lower> -0.786 </lower>
-				<upper> 0.786 </upper>
+				<lower> <%= -BALL_JOINT_LIMIT %> </lower>
+				<upper> <%= BALL_JOINT_LIMIT %> </upper>
 				<velocity> 0.1 </velocity>
 			</limit>
 		</axis>
 		<axis2> 
 			<xyz> 0 0 1 </xyz>
 			<limit>
-				<lower> -0.786 </lower>
-				<upper> 0.786 </upper>
+				<lower> <%= -BALL_JOINT_LIMIT %> </lower>
+				<upper> <%= BALL_JOINT_LIMIT %> </upper>
 				<velocity> 0.1 </velocity>
 			</limit>
 		</axis2>
@@ -334,8 +341,8 @@
 		<axis> 
 			<xyz> 1 0 0 </xyz>
 			<limit>
-				<lower> -0.786 </lower>
-				<upper> 0.786 </upper>
+				<lower> <%= -BALL_JOINT_LIMIT %> </lower>
+				<upper> <%= BALL_JOINT_LIMIT %> </upper>
 			</limit>
 		</axis>
 	</joint>
@@ -347,8 +354,8 @@
 		<axis> 
 			<xyz> 1 0 0 </xyz>
 			<limit>
-				<lower> -0.786 </lower>
-				<upper> 0.786 </upper>
+				<lower> <%= -BALL_JOINT_LIMIT %> </lower>
+				<upper> <%= BALL_JOINT_LIMIT %> </upper>
 			</limit>
 		</axis>
 	</joint>
@@ -360,8 +367,8 @@
 		<axis> 
 			<xyz> 1 0 0 </xyz>
 			<limit>
-				<lower> -0.786 </lower>
-				<upper> 0.786 </upper>
+				<lower> <%= -BALL_JOINT_LIMIT %> </lower>
+				<upper> <%= BALL_JOINT_LIMIT %> </upper>
 			</limit>
 		</axis>
 	</joint>
@@ -373,8 +380,8 @@
 		<axis> 
 			<xyz> 1 0 0 </xyz>
 			<limit>
-				<lower> -0.786 </lower>
-				<upper> 0.786 </upper>
+				<lower> <%= -BALL_JOINT_LIMIT %> </lower>
+				<upper> <%= BALL_JOINT_LIMIT %> </upper>
 			</limit>
 		</axis>
 	</joint>
@@ -386,8 +393,8 @@
 		<axis> 
 			<xyz> 1 0 0 </xyz>
 			<limit>
-				<lower> -0.786 </lower>
-				<upper> 0.786 </upper>
+				<lower> <%= -BALL_JOINT_LIMIT %> </lower>
+				<upper> <%= BALL_JOINT_LIMIT %> </upper>
 			</limit>
 		</axis>
 	</joint>
@@ -399,8 +406,8 @@
 		<axis> 
 			<xyz> 1 0 0 </xyz>
 			<limit>
-				<lower> -0.786 </lower>
-				<upper> 0.786 </upper>
+				<lower> <%= -BALL_JOINT_LIMIT %> </lower>
+				<upper> <%= BALL_JOINT_LIMIT %> </upper>
 			</limit>
 		</axis>
 	</joint>
@@ -412,8 +419,8 @@
 		<axis> 
 			<xyz> 1 0 0 </xyz>
 			<limit>
-				<lower> -0.786 </lower>
-				<upper> 0.786 </upper>
+				<lower> <%= -BALL_JOINT_LIMIT %> </lower>
+				<upper> <%= BALL_JOINT_LIMIT %> </upper>
 			</limit>
 		</axis>
 	</joint>
@@ -425,8 +432,8 @@
 		<axis> 
 			<xyz> 1 0 0 </xyz>
 			<limit>
-				<lower> -0.786 </lower>
-				<upper> 0.786 </upper>
+				<lower> <%= -BALL_JOINT_LIMIT %> </lower>
+				<upper> <%= BALL_JOINT_LIMIT %> </upper>
 			</limit>
 		</axis>
 	</joint>
@@ -438,8 +445,8 @@
 		<axis> 
 			<xyz> 1 0 0 </xyz>
 			<limit>
-				<lower> -0.786 </lower>
-				<upper> 0.786 </upper>
+				<lower> <%= -BALL_JOINT_LIMIT %> </lower>
+				<upper> <%= BALL_JOINT_LIMIT %> </upper>
 			</limit>
 		</axis>
 	</joint>
@@ -451,8 +458,8 @@
 		<axis> 
 			<xyz> 1 0 0 </xyz>
 			<limit>
-				<lower> -0.786 </lower>
-				<upper> 0.786 </upper>
+				<lower> <%= -BALL_JOINT_LIMIT %> </lower>
+				<upper> <%= BALL_JOINT_LIMIT %> </upper>
 			</limit>
 		</axis>
 	</joint>
@@ -464,8 +471,8 @@
 		<axis> 
 			<xyz> 1 0 0 </xyz>
 			<limit>
-				<lower> -0.786 </lower>
-				<upper> 0.786 </upper>
+				<lower> <%= -BALL_JOINT_LIMIT %> </lower>
+				<upper> <%= BALL_JOINT_LIMIT %> </upper>
 			</limit>
 		</axis>
 	</joint>
@@ -477,8 +484,8 @@
 		<axis> 
 			<xyz> 1 0 0 </xyz>
 			<limit>
-				<lower> -0.786 </lower>
-				<upper> 0.786 </upper>
+				<lower> <%= -BALL_JOINT_LIMIT %> </lower>
+				<upper> <%= BALL_JOINT_LIMIT %> </upper>
 			</limit>
 		</axis>
 	</joint>
@@ -546,7 +553,7 @@
 			<material>
 				<script>
 					<uri>file://media/materials/scripts/gazebo.material</uri>
-					<name>Gazebo/Red</name>
+					<name>Gazebo/Orange</name>
 				</script>
 			</material>
 		</visual>
@@ -562,7 +569,7 @@
 	</link>
 
 	<link name = "bottom_ball1_link" >
-		<pose> <%= BALL_DTC*Math.cos(1.571+Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= BALL_DTC*Math.sin(1.571+Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= BASE_HEIGHT %> 0 0 <%= 1.571+PISTON_YAW_ANGLE %> </pose>
+		<pose> <%= BALL_DTC*Math.cos(PI/2+Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= BALL_DTC*Math.sin(PI/2+Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= BASE_HEIGHT %> 0 0 <%= PI/2+PISTON_YAW_ANGLE %> </pose>
 		<inertial>
 			<mass> 0.1 </mass>
 			<inertia>
@@ -593,7 +600,7 @@
 	</link>
 
 	<link name = "bottom_ball2_link" >
-		<pose> <%= BALL_DTC*Math.cos(1.571-Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= BALL_DTC*Math.sin(1.571-Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= BASE_HEIGHT %> 0 0 <%= -1.571-PISTON_YAW_ANGLE %> </pose>
+		<pose> <%= BALL_DTC*Math.cos(PI/2-Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= BALL_DTC*Math.sin(PI/2-Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= BASE_HEIGHT %> 0 0 <%= -PI/2-PISTON_YAW_ANGLE %> </pose>
 		<inertial>
 			<mass> 0.1 </mass>
 			<inertia>
@@ -624,7 +631,7 @@
 	</link>
 
 	<link name = "bottom_ball3_link" >
-		<pose> <%= BALL_DTC*Math.cos(-0.524+Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= BALL_DTC*Math.sin(-0.524+Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= BASE_HEIGHT %> 0 0 0 </pose>
+		<pose> <%= BALL_DTC*Math.cos(-PI/6+Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= BALL_DTC*Math.sin(-PI/6+Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= BASE_HEIGHT %> 0 0 0 </pose>
 		<inertial>
 			<mass> 0.1 </mass>
 			<inertia>
@@ -655,7 +662,7 @@
 	</link>
 
 	<link name = "bottom_ball4_link" >
-		<pose> <%= BALL_DTC*Math.cos(-0.524-Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= BALL_DTC*Math.sin(-0.524-Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= BASE_HEIGHT %> 0 0 <%= 1.571+PISTON_YAW_ANGLE %> </pose>
+		<pose> <%= BALL_DTC*Math.cos(-PI/6-Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= BALL_DTC*Math.sin(-PI/6-Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= BASE_HEIGHT %> 0 0 <%= PI/2+PISTON_YAW_ANGLE %> </pose>
 		<inertial>
 			<mass> 0.1 </mass>
 			<inertia>
@@ -686,7 +693,7 @@
 	</link>
 
 	<link name = "bottom_ball5_link" >
-		<pose> <%= BALL_DTC*Math.cos(-2.62+Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= BALL_DTC*Math.sin(-2.62+Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= BASE_HEIGHT %> 0 0 <%= -1.571-PISTON_YAW_ANGLE %> </pose>
+		<pose> <%= BALL_DTC*Math.cos(-5*PI/6+Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= BALL_DTC*Math.sin(-5*PI/6+Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= BASE_HEIGHT %> 0 0 <%= -PI/2-PISTON_YAW_ANGLE %> </pose>
 		<inertial>
 			<mass> 0.1 </mass>
 			<inertia>
@@ -717,7 +724,7 @@
 	</link>
 
 	<link name = "bottom_ball6_link" >
-		<pose> <%= BALL_DTC*Math.cos(-2.62-Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= BALL_DTC*Math.sin(-2.62-Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= BASE_HEIGHT %> 0 0 0 </pose>
+		<pose> <%= BALL_DTC*Math.cos(-5*PI/6-Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= BALL_DTC*Math.sin(-5*PI/6-Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= BASE_HEIGHT %> 0 0 0 </pose>
 		<inertial>
 			<mass> 0.1 </mass>
 			<inertia>
@@ -748,7 +755,7 @@
 	</link>
 
 	<link name = "top_ball1_link" >
-		<pose> <%= BALL_DTC*Math.cos(2.618-Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= BALL_DTC*Math.sin(2.618-Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= 0.5*BASE_HEIGHT+BASE_PLATFORM_DISTANCE-0.5*PLATFORM_HEIGHT %> 0 0 <%= 1.571+PISTON_YAW_ANGLE %> </pose>
+		<pose> <%= BALL_DTC*Math.cos(5*PI/6-Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= BALL_DTC*Math.sin(5*PI/6-Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= 0.5*BASE_HEIGHT+BASE_PLATFORM_DISTANCE-0.5*PLATFORM_HEIGHT %> 0 0 <%= PI/2+PISTON_YAW_ANGLE %> </pose>
 		<inertial>
 			<mass> 0.1 </mass>
 			<inertia>
@@ -779,7 +786,7 @@
 	</link>
 
 	<link name = "top_ball2_link" >
-		<pose> <%= BALL_DTC*Math.cos(0.524+Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= BALL_DTC*Math.sin(0.524+Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= 0.5*BASE_HEIGHT+BASE_PLATFORM_DISTANCE-0.5*PLATFORM_HEIGHT %> 0 0 <%= -1.571-PISTON_YAW_ANGLE %> </pose>
+		<pose> <%= BALL_DTC*Math.cos(PI/6+Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= BALL_DTC*Math.sin(PI/6+Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= 0.5*BASE_HEIGHT+BASE_PLATFORM_DISTANCE-0.5*PLATFORM_HEIGHT %> 0 0 <%= -PI/2-PISTON_YAW_ANGLE %> </pose>
 		<inertial>
 			<mass> 0.1 </mass>
 			<inertia>
@@ -810,7 +817,7 @@
 	</link>
 
 	<link name = "top_ball3_link" >
-		<pose> <%= BALL_DTC*Math.cos(0.524-Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= BALL_DTC*Math.sin(0.524-Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= 0.5*BASE_HEIGHT+BASE_PLATFORM_DISTANCE-0.5*PLATFORM_HEIGHT %> 0 0 0 </pose>
+		<pose> <%= BALL_DTC*Math.cos(PI/6-Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= BALL_DTC*Math.sin(PI/6-Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= 0.5*BASE_HEIGHT+BASE_PLATFORM_DISTANCE-0.5*PLATFORM_HEIGHT %> 0 0 0 </pose>
 		<inertial>
 			<mass> 0.1 </mass>
 			<inertia>
@@ -841,7 +848,7 @@
 	</link>
 
 	<link name = "top_ball4_link" >
-		<pose> <%= BALL_DTC*Math.cos(4.712+Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= BALL_DTC*Math.sin(4.712+Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= 0.5*BASE_HEIGHT+BASE_PLATFORM_DISTANCE-0.5*PLATFORM_HEIGHT %> 0 0 <%= 1.571+PISTON_YAW_ANGLE %> </pose>
+		<pose> <%= BALL_DTC*Math.cos(3*PI/2+Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= BALL_DTC*Math.sin(3*PI/2+Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= 0.5*BASE_HEIGHT+BASE_PLATFORM_DISTANCE-0.5*PLATFORM_HEIGHT %> 0 0 <%= PI/2+PISTON_YAW_ANGLE %> </pose>
 		<inertial>
 			<mass> 0.1 </mass>
 			<inertia>
@@ -872,7 +879,7 @@
 	</link>
 
 	<link name = "top_ball5_link" >
-		<pose> <%= BALL_DTC*Math.cos(4.712-Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= BALL_DTC*Math.sin(4.712-Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= 0.5*BASE_HEIGHT+BASE_PLATFORM_DISTANCE-0.5*PLATFORM_HEIGHT %> 0 0 <%= -1.571-PISTON_YAW_ANGLE %> </pose>
+		<pose> <%= BALL_DTC*Math.cos(3*PI/2-Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= BALL_DTC*Math.sin(3*PI/2-Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= 0.5*BASE_HEIGHT+BASE_PLATFORM_DISTANCE-0.5*PLATFORM_HEIGHT %> 0 0 <%= -PI/2-PISTON_YAW_ANGLE %> </pose>
 		<inertial>
 			<mass> 0.1 </mass>
 			<inertia>
@@ -903,7 +910,7 @@
 	</link>
 
 	<link name = "top_ball6_link" >
-		<pose> <%= BALL_DTC*Math.cos(2.618+Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= BALL_DTC*Math.sin(2.618+Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= 0.5*BASE_HEIGHT+BASE_PLATFORM_DISTANCE-0.5*PLATFORM_HEIGHT %> 0 0 0 </pose>
+		<pose> <%= BALL_DTC*Math.cos(5*PI/6+Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= BALL_DTC*Math.sin(5*PI/6+Math.asin(PISTON_RADIUS/(BASE_RADIUS-2*PISTON_RADIUS))) %> <%= 0.5*BASE_HEIGHT+BASE_PLATFORM_DISTANCE-0.5*PLATFORM_HEIGHT %> 0 0 0 </pose>
 		<inertial>
 			<mass> 0.1 </mass>
 			<inertia>
@@ -934,7 +941,7 @@
 	</link>
 
 	<link name = "piston1_cylinder_link" >
-		<pose> <%= -DISTANCE_TO_MIDPOINT*Math.sin(0.526) %> <%= DISTANCE_TO_MIDPOINT*Math.cos(0.526) %> <%= 0.5*(BASE_HEIGHT+BASE_PLATFORM_DISTANCE) %> <%= -PISTON_PITCH_ANGLE %> 0 <%= 1.571+PISTON_YAW_ANGLE %> </pose>
+		<pose> <%= -DISTANCE_TO_MIDPOINT*Math.sin(PI/6) %> <%= DISTANCE_TO_MIDPOINT*Math.cos(PI/6) %> <%= 0.5*(2*BASE_HEIGHT+ (BASE_PLATFORM_DISTANCE-0.5*(BASE_HEIGHT+PLATFORM_HEIGHT))) %> <%= -PISTON_PITCH_ANGLE %> 0 <%= PI/2+PISTON_YAW_ANGLE %> </pose>
 		<inertial>
 			<mass> 0.1 </mass>
 			<inertia>
@@ -973,7 +980,7 @@
 	</link>
 
 	<link name = "piston2_cylinder_link" >
-		<pose> <%= DISTANCE_TO_MIDPOINT*Math.sin(0.526) %> <%= DISTANCE_TO_MIDPOINT*Math.cos(0.526) %> <%= 0.5*(BASE_HEIGHT+BASE_PLATFORM_DISTANCE) %> <%= -PISTON_PITCH_ANGLE %> 0 <%= -1.571-PISTON_YAW_ANGLE %> </pose>
+		<pose> <%= DISTANCE_TO_MIDPOINT*Math.sin(PI/6) %> <%= DISTANCE_TO_MIDPOINT*Math.cos(PI/6) %> <%= 0.5*(2*BASE_HEIGHT+ (BASE_PLATFORM_DISTANCE-0.5*(BASE_HEIGHT+PLATFORM_HEIGHT))) %> <%= -PISTON_PITCH_ANGLE %> 0 <%= -PI/2-PISTON_YAW_ANGLE %> </pose>
 		<inertial>
 			<mass> 0.1 </mass>
 			<inertia>
@@ -1012,7 +1019,7 @@
 	</link>
 
 	<link name = "piston3_cylinder_link" >
-		<pose> <%= DISTANCE_TO_MIDPOINT %> 0 <%= 0.5*(BASE_HEIGHT+BASE_PLATFORM_DISTANCE) %> <%= -PISTON_PITCH_ANGLE %> 0 0 </pose>
+		<pose> <%= DISTANCE_TO_MIDPOINT %> 0 <%= 0.5*(2*BASE_HEIGHT+ (BASE_PLATFORM_DISTANCE-0.5*(BASE_HEIGHT+PLATFORM_HEIGHT))) %> <%= -PISTON_PITCH_ANGLE %> 0 0 </pose>
 		<inertial>
 			<mass> 0.1 </mass>
 			<inertia>
@@ -1051,7 +1058,7 @@
 	</link>
 
 	<link name = "piston4_cylinder_link" >
-		<pose> <%= DISTANCE_TO_MIDPOINT*Math.cos(1.047) %> <%= -DISTANCE_TO_MIDPOINT*Math.sin(1.047) %> <%= 0.5*(BASE_HEIGHT+BASE_PLATFORM_DISTANCE) %> <%= -PISTON_PITCH_ANGLE %> 0 <%= 1.571+PISTON_YAW_ANGLE %> </pose>
+		<pose> <%= DISTANCE_TO_MIDPOINT*Math.cos(PI/3) %> <%= -DISTANCE_TO_MIDPOINT*Math.sin(PI/3) %> <%= 0.5*(2*BASE_HEIGHT+ (BASE_PLATFORM_DISTANCE-0.5*(BASE_HEIGHT+PLATFORM_HEIGHT))) %> <%= -PISTON_PITCH_ANGLE %> 0 <%= PI/2+PISTON_YAW_ANGLE %> </pose>
 		<inertial>
 			<mass> 0.1 </mass>
 			<inertia>
@@ -1090,7 +1097,7 @@
 	</link>
 
 	<link name = "piston5_cylinder_link" >
-		<pose> <%= DISTANCE_TO_MIDPOINT*Math.cos(2.094) %> <%= -DISTANCE_TO_MIDPOINT*Math.sin(2.094) %> <%= 0.5*(BASE_HEIGHT+BASE_PLATFORM_DISTANCE) %> <%= -PISTON_PITCH_ANGLE %> 0 <%= -1.571-PISTON_YAW_ANGLE %> </pose>
+		<pose> <%= DISTANCE_TO_MIDPOINT*Math.cos(2*PI/3) %> <%= -DISTANCE_TO_MIDPOINT*Math.sin(2*PI/3) %> <%= 0.5*(2*BASE_HEIGHT+ (BASE_PLATFORM_DISTANCE-0.5*(BASE_HEIGHT+PLATFORM_HEIGHT))) %> <%= -PISTON_PITCH_ANGLE %> 0 <%= -PI/2-PISTON_YAW_ANGLE %> </pose>
 		<inertial>
 			<mass> 0.1 </mass>
 			<inertia>
@@ -1129,7 +1136,7 @@
 	</link>
 
 	<link name = "piston6_cylinder_link" >
-		<pose> <%= -DISTANCE_TO_MIDPOINT %> 0 <%= 0.5*(BASE_HEIGHT+BASE_PLATFORM_DISTANCE) %> <%= -PISTON_PITCH_ANGLE %> 0 0 </pose>
+		<pose> <%= -DISTANCE_TO_MIDPOINT %> 0 <%= 0.5*(2*BASE_HEIGHT+ (BASE_PLATFORM_DISTANCE-0.5*(BASE_HEIGHT+PLATFORM_HEIGHT))) %> <%= -PISTON_PITCH_ANGLE %> 0 0 </pose>
 		<inertial>
 			<mass> 0.1 </mass>
 			<inertia>
@@ -1168,7 +1175,7 @@
 	</link>
 
 	<link name = "piston1_shaft_link" >
-		<pose> <%= -DISTANCE_TO_MIDPOINT*Math.sin(0.526) %> <%= DISTANCE_TO_MIDPOINT*Math.cos(0.526) %> <%= 0.5*(BASE_HEIGHT+BASE_PLATFORM_DISTANCE) %> <%= -PISTON_PITCH_ANGLE %> 0 <%= 1.571+PISTON_YAW_ANGLE %> </pose>
+		<pose> <%= -DISTANCE_TO_MIDPOINT*Math.sin(PI/6) %> <%= DISTANCE_TO_MIDPOINT*Math.cos(PI/6) %> <%= 0.5*(2*BASE_HEIGHT+ (BASE_PLATFORM_DISTANCE-0.5*(BASE_HEIGHT+PLATFORM_HEIGHT))) %> <%= -PISTON_PITCH_ANGLE %> 0 <%= PI/2+PISTON_YAW_ANGLE %> </pose>
 		<inertial>
 			<mass> 0.1 </mass>
 			<inertia>
@@ -1207,7 +1214,7 @@
 	</link>
 
 	<link name = "piston2_shaft_link" >
-		<pose> <%= DISTANCE_TO_MIDPOINT*Math.sin(0.526) %> <%= DISTANCE_TO_MIDPOINT*Math.cos(0.526) %> <%= 0.5*(BASE_HEIGHT+BASE_PLATFORM_DISTANCE) %> <%= -PISTON_PITCH_ANGLE %> 0 <%= -1.571-PISTON_YAW_ANGLE %> </pose>
+		<pose> <%= DISTANCE_TO_MIDPOINT*Math.sin(PI/6) %> <%= DISTANCE_TO_MIDPOINT*Math.cos(PI/6) %> <%= 0.5*(2*BASE_HEIGHT+ (BASE_PLATFORM_DISTANCE-0.5*(BASE_HEIGHT+PLATFORM_HEIGHT))) %> <%= -PISTON_PITCH_ANGLE %> 0 <%= -PI/2-PISTON_YAW_ANGLE %> </pose>
 		<inertial>
 			<mass> 0.1 </mass>
 			<inertia>
@@ -1246,7 +1253,7 @@
 	</link>
 
 	<link name = "piston3_shaft_link" >
-		<pose> <%= DISTANCE_TO_MIDPOINT %> 0 <%= 0.5*(BASE_HEIGHT+BASE_PLATFORM_DISTANCE) %> <%= -PISTON_PITCH_ANGLE %> 0 0 </pose>
+		<pose> <%= DISTANCE_TO_MIDPOINT %> 0 <%= 0.5*(2*BASE_HEIGHT+ (BASE_PLATFORM_DISTANCE-0.5*(BASE_HEIGHT+PLATFORM_HEIGHT))) %> <%= -PISTON_PITCH_ANGLE %> 0 0 </pose>
 		<inertial>
 			<mass> 0.1 </mass>
 			<inertia>
@@ -1285,7 +1292,7 @@
 	</link>
 
 	<link name = "piston4_shaft_link" >
-		<pose> <%= DISTANCE_TO_MIDPOINT*Math.cos(1.047) %> <%= -DISTANCE_TO_MIDPOINT*Math.sin(1.047) %> <%= 0.5*(BASE_HEIGHT+BASE_PLATFORM_DISTANCE) %> <%= -PISTON_PITCH_ANGLE %> 0 <%= 1.571+PISTON_YAW_ANGLE %> </pose>
+		<pose> <%= DISTANCE_TO_MIDPOINT*Math.cos(PI/3) %> <%= -DISTANCE_TO_MIDPOINT*Math.sin(PI/3) %> <%= 0.5*(2*BASE_HEIGHT+ (BASE_PLATFORM_DISTANCE-0.5*(BASE_HEIGHT+PLATFORM_HEIGHT))) %> <%= -PISTON_PITCH_ANGLE %> 0 <%= PI/2+PISTON_YAW_ANGLE %> </pose>
 		<inertial>
 			<mass> 0.1 </mass>
 			<inertia>
@@ -1324,7 +1331,7 @@
 	</link>
 
 	<link name = "piston5_shaft_link" >
-		<pose> <%= DISTANCE_TO_MIDPOINT*Math.cos(2.094) %> <%= -DISTANCE_TO_MIDPOINT*Math.sin(2.094) %> <%= 0.5*(BASE_HEIGHT+BASE_PLATFORM_DISTANCE) %> <%= -PISTON_PITCH_ANGLE %> 0 <%= -1.571-PISTON_YAW_ANGLE %> </pose>
+		<pose> <%= DISTANCE_TO_MIDPOINT*Math.cos(2*PI/3) %> <%= -DISTANCE_TO_MIDPOINT*Math.sin(2*PI/3) %> <%= 0.5*(2*BASE_HEIGHT+ (BASE_PLATFORM_DISTANCE-0.5*(BASE_HEIGHT+PLATFORM_HEIGHT))) %> <%= -PISTON_PITCH_ANGLE %> 0 <%= -PI/2-PISTON_YAW_ANGLE %> </pose>
 		<inertial>
 			<mass> 0.1 </mass>
 			<inertia>
@@ -1363,7 +1370,7 @@
 	</link>
 
 	<link name = "piston6_shaft_link" >
-		<pose> <%= -DISTANCE_TO_MIDPOINT %> 0 <%= 0.5*(BASE_HEIGHT+BASE_PLATFORM_DISTANCE) %> <%= -PISTON_PITCH_ANGLE %> 0 0 </pose>
+		<pose> <%= -DISTANCE_TO_MIDPOINT %> 0 <%= 0.5*(2*BASE_HEIGHT+ (BASE_PLATFORM_DISTANCE-0.5*(BASE_HEIGHT+PLATFORM_HEIGHT))) %> <%= -PISTON_PITCH_ANGLE %> 0 0 </pose>
 		<inertial>
 			<mass> 0.1 </mass>
 			<inertia>
