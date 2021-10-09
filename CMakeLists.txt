@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.0.2)
 project(stewart)
 
 SET(Eigen3_INCLUDE_DIRS "/usr/local/include/eigen3")
