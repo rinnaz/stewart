@@ -9,18 +9,9 @@ Clone this repo to your catkin workspace src directory and build it:
 ```
 cd ~/your_catkin_ws_src_path/  
 git clone https://github.com/daniel-s-ingram/stewart.git  
-catkin build stewart
+cd ..
+catkin_make
 source ~/your_catkin_ws/devel/setup.bash
-```
-
-To build the plugin:
-
-```
-cd plugin  
-mkdir build  
-cd build  
-cmake ../  
-make  
 ```
 
 Create the SDF file from the ERB template:
