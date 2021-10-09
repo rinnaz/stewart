@@ -7,6 +7,9 @@
 
 #include <gazebo/gazebo.hh>
 #include <gazebo/physics/physics.hh>
+#include <gazebo/transport/TransportTypes.hh>
+#include <gazebo/common/Plugin.hh>
+#include <gazebo/common/Events.hh>
 
 #include "ros/ros.h"
 #include "ros/callback_queue.h"
