@@ -11,7 +11,7 @@
   <arg name="verbose" default="true"/>
   
   <arg name="height" default="2.0"/>
-  <arg name="radius" default="2.0"/>
+  <arg name="radius" default="1.0"/>
 
 
 
