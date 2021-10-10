@@ -19,8 +19,6 @@ catkin_package(DEPENDS Eigen3)
 include_directories(include
     ${catkin_INCLUDE_DIRS}
     ${Eigen3_INCLUDE_DIRS}
-    ${roscpp_INCLUDE_DIRS}
-    ${std_msgs_INCLUDE_DIRS}
     ${GAZEBO_INCLUDE_DIRS}
 )
 
@@ -33,4 +31,7 @@ target_link_libraries(ik ${catkin_LIBRARIES})
 # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GAZEBO_CXX_FLAGS}")
 
 add_library(joint_controller SHARED src/joint_controller.cc)
-target_link_libraries(joint_controller ${GAZEBO_libraries} ${catkin_LIBRARIES})
+target_link_libraries(joint_controller 
+    ${GAZEBO_libraries} 
+    ${catkin_LIBRARIES}
+)

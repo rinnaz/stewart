@@ -5,6 +5,8 @@
 #include "geometry_msgs/Twist.h"
 #include "ros/ros.h"
 #include "std_msgs/Float32MultiArray.h"
+#include <tuple>
+#include <string>
 
 #ifndef M_PI
 #define M_PI (3.14159265358979323846)
@@ -22,6 +24,8 @@ public:
 
 private: 
     void callback(const geometry_msgs::Twist::ConstPtr& msg);
+
+    std::tuple<double, double> processArgs(char **argv);
 
     Eigen::Matrix<double, 4, 4> transformation_matrix(const double& x,
                                                       const double& y,

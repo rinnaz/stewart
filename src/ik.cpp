@@ -3,11 +3,22 @@
 IK::IK(int argc, char **argv)
 :   height { 2.0 }
 {
+    auto bp_distance { height };
+    auto base_radius { 2.0 };
+    
+    if (argc > 2)
+    {
+        ROS_INFO("Args are passed");
+        try{
+            std::tie(bp_distance, base_radius) = processArgs(argv);
+        } catch ( ros::Exception &e )
+        {
+            ROS_ERROR("Error occured: %s ", e.what());
+        }
+    }
     // Platform configuration is currently hardcoded
     // should be reimplemented through config files
-    auto bp_distance { height };
-    auto base_height { 0.25 };
-    auto base_radius     { 2.0 };
+    auto base_height     { 0.25 };
     auto platform_height { 0.1 };
     auto platform_radius { base_radius };
     auto ball_radius     { 0.1 };
@@ -102,6 +113,14 @@ IK::IK(int argc, char **argv)
     ros::NodeHandle nh;
     pub = nh.advertise<std_msgs::Float32MultiArray>("/stewart/position_cmd", 100);
     sub = nh.subscribe("stewart/platform_twist", 100, &IK::callback, this);
+}
+
+std::tuple<double, double> IK::processArgs(char **argv)
+{
+    double height_, radius_;
+    height_ = std::stod(argv[1]);
+    radius_ = std::stod(argv[2]);
+    return {height_, radius_};
 }
 
 void IK::run()
